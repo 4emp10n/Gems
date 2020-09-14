@@ -69,7 +69,7 @@ void GetBoard(vector<char>& board)
 		}
 	}
 }
-void Check_Win(vector<char>& board)
+bool Check_Win(vector<char>& board)
 {
 	int Counter = 0;
 	bool win = 0;
@@ -117,9 +117,27 @@ void Check_Win(vector<char>& board)
 			}
 		}
 	}
-	//return win;
+	return win;
 }
+bool IsLegal(vector<char> board, int number_1, int number_2)
+{
+	int temp = number_1;
+	
+	if (number_1 - number_2 == 1 || number_2 - number_1 == 1)
+	{
+		board[number_1] = board[number_2];
+		board[number_2] = board[temp];
+	}
 
+	if (Check_Win(board) == 1)
+	{
+		true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 
 //class Swap: public Winner, protected Board
@@ -159,7 +177,11 @@ int main()
 	FillTheBoard(board, BOARD_SIZE);
 	GetBoard(board);
 	cout << endl << endl << endl;
-	Check_Win(board);
+	while (Check_Win(board))
+	{
+		Check_Win(board);
+	}
+		
 	GetBoard(board);
 	
 }
