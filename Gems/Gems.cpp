@@ -123,7 +123,7 @@ bool IsLegal(vector<char> board, int number_1, int number_2)
 {
 	int temp = number_1;
 	
-	if (number_1 - number_2 == 1 || number_2 - number_1 == 1)
+	if (number_1 - number_2 == 1 || number_2 - number_1 == 1 || number_1 - number_2 == 4 || number_2 - number_1 == 4)
 	{
 		board[number_1] = board[number_2];
 		board[number_2] = board[temp];
@@ -131,11 +131,26 @@ bool IsLegal(vector<char> board, int number_1, int number_2)
 
 	if (Check_Win(board) == 1)
 	{
-		true;
+		return true;
 	}
 	else
 	{
 		return false;
+	}
+}
+vector<char> Swap(vector<char>& board, int number_1, int number_2)
+{
+	int temp = number_1;
+
+	if (IsLegal(board, number_1, number_2) == 1)
+	{
+		board[number_1] = board[number_2];
+		board[number_2] = board[temp];
+		return board;
+	}
+	else
+	{
+		return board;
 	}
 }
 
@@ -172,6 +187,8 @@ int main()
 
 	/////////
 
+
+	
 	vector<char> board;
 	const int BOARD_SIZE = 16;
 	FillTheBoard(board, BOARD_SIZE);
@@ -181,8 +198,20 @@ int main()
 	{
 		Check_Win(board);
 	}
-		
 	GetBoard(board);
+	int number_1, number_2;
+	cin >> number_1 >> number_2;
+	while (number_1 != 100 && number_2 != 100)
+	{
+		Swap(board, number_1, number_2);
+		while (Check_Win(board))
+		{
+			Check_Win(board);
+
+		}
+		GetBoard(board);
+		cin >> number_1 >> number_2;
+	}
 	
 }
 
