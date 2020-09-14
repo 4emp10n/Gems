@@ -91,6 +91,10 @@ public:
 			if (m_board[i] == m_board[k])
 			{
 				m_Counter++;
+				if (i == 3 || i == 7 || i == 1 || i == 15)
+				{
+					m_Counter = 0;
+				}
 			}
 			else
 			{
