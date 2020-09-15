@@ -119,6 +119,74 @@ bool Check_Win(vector<char>& board)
 	}
 	return win;
 }
+bool Check_Win_Vert(vector<char>& board)
+{
+	int counter = 0;
+	int win = 0;
+
+	for (int l = 0 , i = l, j = i + 4 ; ; i += 4, j += 4, l++)
+	{
+		if (board[i] == board[j])
+		{
+			counter++;
+			if (j == 12)
+			{
+				counter = 0;
+				i = 1;
+			}
+			else if (j == 13)
+			{
+				counter = 0;
+				i = 2;
+			}
+			else if (j == 14)
+			{
+				counter = 0;
+				i = 3;
+			}
+			else if (j == 15)
+			{
+				break;
+			}
+		}
+		else
+		{
+			counter = 0;
+		}
+
+		if (counter == 2 && (j != 12 || j!= 13 || j!= 14 || j != 15))
+		{
+			if (board[i + 4] == board[j + 4])
+			{
+				counter = 3;
+				for (int k = 0; k < counter; k++)
+				{
+					FillTheCell(board, (j + 4) - k);
+					win = 1;
+				}
+			}
+			else
+			{
+				for (int k = 0; k <= counter; k++)
+				{
+					FillTheCell(board, j - k);
+					win = 1;
+				}
+			}
+		}
+		else if (counter == 2)
+		{
+			for (int k = 0; k < counter; k++)
+			{
+				FillTheCell(board, j - k);
+				win = 1;
+			}
+		}
+		i = l;
+		j = i + 4;
+	}
+	return win;
+}
 bool IsLegal(vector<char> board, int number_1, int number_2)
 {
 	int temp = number_1;
@@ -155,46 +223,21 @@ vector<char> Swap(vector<char>& board, int number_1, int number_2)
 }
 
 
-//class Swap: public Winner, protected Board
-//{
-//public:
-//	bool isLegal(Board board, int number_1, int number_2)
-//	{
-//		int temp = number_1;
-//		if (number_1 - number_2 == 1 || number_2 - number_1 == 1)
-//		{
-//			board.m_board[number_1] = board[number_2];
-//			board[number_2] = board[temp];
-//		}
-//		board.Check_Win
-//	}
-//		
-//private:
-//
-//}
 
 int main()
 {
 	srand(static_cast<unsigned int>(time(0)));
 	
 	
-	/*Winner player1;
-	player1.FillTheBoard();
-	player1.GetBoard();
-	cout << endl << endl << endl;
-	player1.Check_Win();
-	player1.GetBoard();*/
-
-	/////////
-
-
-	
 	vector<char> board;
 	const int BOARD_SIZE = 16;
 	FillTheBoard(board, BOARD_SIZE);
 	GetBoard(board);
 	cout << endl << endl << endl;
-	while (Check_Win(board))
+
+	Check_Win_Vert(board);
+	GetBoard(board);
+	/*while (Check_Win(board))
 	{
 		Check_Win(board);
 	}
@@ -211,7 +254,7 @@ int main()
 		}
 		GetBoard(board);
 		cin >> number_1 >> number_2;
-	}
+	}*/
 	
 }
 
