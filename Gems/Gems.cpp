@@ -121,7 +121,6 @@ bool Check_Win(vector<char>& board)
 }
 bool Check_Win_Vert(vector<char>& board)
 {
-	
 	int win = 0;
 	int i = 0, k = 4, end = 12;
 
@@ -174,80 +173,15 @@ bool Check_Win_Vert(vector<char>& board)
 		end++;
 	}
 	return win;
-
-
-
-	/*for (int l = 0 , i = l, j = i + 4 ; ; i += 4, j += 4, l++)
-	{
-		if (board[i] == board[j])
-		{
-			counter++;
-			if (j == 12)
-			{
-				counter = 0;
-				i = 1;
-			}
-			else if (j == 13)
-			{
-				counter = 0;
-				i = 2;
-			}
-			else if (j == 14)
-			{
-				counter = 0;
-				i = 3;
-			}
-			else if (j == 15)
-			{
-				break;
-			}
-		}
-		else
-		{
-			counter = 0;
-		}
-
-		if (counter == 2 && (j != 12 || j!= 13 || j!= 14 || j != 15))
-		{
-			if (board[i + 4] == board[j + 4])
-			{
-				counter = 3;
-				for (int k = 0; k < counter; k++)
-				{
-					FillTheCell(board, (j + 4) - k);
-					win = 1;
-				}
-			}
-			else
-			{
-				for (int k = 0; k <= counter; k++)
-				{
-					FillTheCell(board, j - k);
-					win = 1;
-				}
-			}
-		}
-		else if (counter == 2)
-		{
-			for (int k = 0; k < counter; k++)
-			{
-				FillTheCell(board, j - k);
-				win = 1;
-			}
-		}
-		i = l;
-		j = i + 4;
-	}
-	return win;*/
 }
 bool IsLegal(vector<char> board, int number_1, int number_2)
 {
-	int temp = number_1;
+	char temp = board[number_1];
 	
 	if (number_1 - number_2 == 1 || number_2 - number_1 == 1 || number_1 - number_2 == 4 || number_2 - number_1 == 4)
 	{
 		board[number_1] = board[number_2];
-		board[number_2] = board[temp];
+		board[number_2] = temp;
 	}
 
 	if (Check_Win(board) == 1 || Check_Win_Vert(board) == 1)
@@ -261,12 +195,12 @@ bool IsLegal(vector<char> board, int number_1, int number_2)
 }
 vector<char> Swap(vector<char>& board, int number_1, int number_2)
 {
-	int temp = number_1;
+	int temp = board[number_1];
 
 	if (IsLegal(board, number_1, number_2) == 1)
 	{
 		board[number_1] = board[number_2];
-		board[number_2] = board[temp];
+		board[number_2] = temp;
 		return board;
 	}
 	else
@@ -288,15 +222,12 @@ int main()
 	GetBoard(board);
 	cout << endl << endl << endl;
 
-	while (Check_Win(board))
+	while (Check_Win(board) || Check_Win_Vert(board))
 	{
 		Check_Win(board);
-	}
-
-	while (Check_Win_Vert(board))
-	{
 		Check_Win_Vert(board);
 	}
+
 
 	GetBoard (board);
 	int number_1, number_2;
@@ -304,14 +235,11 @@ int main()
 	while (number_1 != 100 && number_2 != 100)
 	{
 		Swap(board, number_1, number_2);
-		while (Check_Win(board))
+		while (Check_Win(board) || Check_Win_Vert(board))
 		{
 			Check_Win(board);
-
-		}
-		while (Check_Win_Vert(board))
-		{
 			Check_Win_Vert(board);
+
 		}
 		GetBoard(board);
 		cin >> number_1 >> number_2;
