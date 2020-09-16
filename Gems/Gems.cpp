@@ -93,7 +93,7 @@ bool Check_Win(vector<char>& board)
 			if (board[i + 1] == board[k + 1])
 			{
 				Counter = 3;
-				for (int j = 0; j < Counter; j++)
+				for (int j = 0; j <= Counter; j++)
 				{
 					FillTheCell(board, (k + 1) - j);
 					win = 1;
@@ -110,7 +110,7 @@ bool Check_Win(vector<char>& board)
 		}
 		else if (Counter == 2)
 		{
-			for (int j = 0; j < Counter; j++)
+			for (int j = 0; j <= Counter; j++)
 			{
 				FillTheCell(board, k - j);
 				win = 1;
@@ -121,10 +121,63 @@ bool Check_Win(vector<char>& board)
 }
 bool Check_Win_Vert(vector<char>& board)
 {
-	int counter = 0;
+	
 	int win = 0;
+	int i = 0, k = 4, end = 12;
 
-	for (int l = 0 , i = l, j = i + 4 ; ; i += 4, j += 4, l++)
+	for (int l = 0; l < 4; l++)
+	{	
+		int counter = 0;
+
+		for ( i = l, k = i + 4; k <= end; i += 4, k += 4)
+		{
+			if (board[i] == board[k])
+			{
+				counter++;
+			}
+			else
+			{
+				counter = 0;
+			}
+
+			if (counter == 2 && (k != end))
+			{
+				if (board[i + 4] == board[k + 4])
+				{
+					counter = 3;
+
+					for (int t = 0, u = 0; t <= counter; t++, u += 4)
+					{
+						FillTheCell(board, (k + 4) - u);
+						win = 1;
+					}
+				}
+				else
+				{
+					for (int t = 0, u = 0; t <= counter; t++, u += 4)
+					{
+						FillTheCell(board, k - u);
+						win = 1;
+					}
+				}
+			}
+			else if (counter == 2)
+			{
+				for (int t = 0, u = 0; t <= counter; t++, u += 4)
+				{
+					FillTheCell(board, k - u);
+					win = 1;
+				}
+			}
+		}
+
+		end++;
+	}
+	return win;
+
+
+
+	/*for (int l = 0 , i = l, j = i + 4 ; ; i += 4, j += 4, l++)
 	{
 		if (board[i] == board[j])
 		{
@@ -185,7 +238,7 @@ bool Check_Win_Vert(vector<char>& board)
 		i = l;
 		j = i + 4;
 	}
-	return win;
+	return win;*/
 }
 bool IsLegal(vector<char> board, int number_1, int number_2)
 {
@@ -197,7 +250,7 @@ bool IsLegal(vector<char> board, int number_1, int number_2)
 		board[number_2] = board[temp];
 	}
 
-	if (Check_Win(board) == 1)
+	if (Check_Win(board) == 1 || Check_Win_Vert(board) == 1)
 	{
 		return true;
 	}
@@ -235,13 +288,17 @@ int main()
 	GetBoard(board);
 	cout << endl << endl << endl;
 
-	Check_Win_Vert(board);
-	GetBoard(board);
-	/*while (Check_Win(board))
+	while (Check_Win(board))
 	{
 		Check_Win(board);
 	}
-	GetBoard(board);
+
+	while (Check_Win_Vert(board))
+	{
+		Check_Win_Vert(board);
+	}
+
+	GetBoard (board);
 	int number_1, number_2;
 	cin >> number_1 >> number_2;
 	while (number_1 != 100 && number_2 != 100)
@@ -252,9 +309,13 @@ int main()
 			Check_Win(board);
 
 		}
+		while (Check_Win_Vert(board))
+		{
+			Check_Win_Vert(board);
+		}
 		GetBoard(board);
 		cin >> number_1 >> number_2;
-	}*/
+	}
 	
 }
 
